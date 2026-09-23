@@ -12,8 +12,6 @@ We propose a greedy algorithm using sorting and two pointers to maximize the num
 
 The key idea is to match the incoming student with the lowest remaining experience score to the senior student with the lowest remaining score who can mentor that student. By doing so, we preserve more experienced senior students for incoming students who may require them.
 
-### Algorithm Description
-
 First, we sort both lists of experience scores in ascending order. We then initialize two pointers, `i` and `j`, at the beginning of the sorted senior and incoming lists, respectively. We also initialize `matches` to zero.
 
 At each iteration, we compare the experience scores of the students at the two pointers:
