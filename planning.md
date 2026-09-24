@@ -62,9 +62,11 @@ We prove that the greedy algorithm always produces the maximum number of valid p
 Let `s` and `a` be the lowest-scoring remaining senior and incoming students, respectively.
 
 **Case 1: `s <= a`**
+
 Since `a` has the lowest score among the remaining incoming students, `s` cannot mentor any of them. Therefore, skipping `s` cannot reduce the maximum number of matches.
 
 **Case 2: `s > a`**
+
 The algorithm pairs `s` with `a`. We show that this choice is consistent with an optimal matching.
 
 Consider any optimal matching:
