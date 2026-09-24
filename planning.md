@@ -2,7 +2,7 @@
 
 ## Problem Formulation
 
-The objective of the Mentor Pairing problem is to efficiently maximize the number of pairs of students between incoming students, each with their own programming experience score, and seniors, each with their own programming experience score.
+The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Seniors = [s_1, s_2, \dots, s_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [i_1, i_2, \dots, i_n]$, with each list containing their programming experience scores. Each student can only be paired one time. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large.
 
 ## Baseline Solution
 
