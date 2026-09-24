@@ -6,6 +6,46 @@ The objective of the Mentor Pairing problem is to efficiently pair two students 
 
 ## Baseline Solution
 
+### Pseudocode
+
+```text
+Algorithm MentorPairingBaseline(Senior, Incoming):
+
+    Input:
+        Senior: A list of n senior students' experience scores
+        Incoming: A list of k incoming students' experience scores
+
+    Output:
+        Maximum number of valid mentor pairings
+
+    Sort Senior in ascending order
+    Sort Incoming in ascending order
+
+    matches = 0
+
+    allpairs = []
+
+    for i from 0 to k-1:
+        row = []
+        for j from 0 to n-1:
+            append (Incoming[i],Senior[j]) to row
+        append row to allpairs
+
+    column = 0
+
+    for i from 0 to k-1:
+        row_to_check = allpairs[i]
+        while column < n:
+            pair = row_to_check[column]
+            if pair[0] < pair[1]:
+                matches += 1
+                column += 1
+                break
+            else:
+                column += 1
+    
+    return matches
+```
 ## Algorithmic Strategy
 
 We propose a greedy algorithm using sorting and two pointers to maximize the number of valid mentor pairings.
