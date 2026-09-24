@@ -55,4 +55,29 @@ Algorithm MentorPairingGreedy(Senior, Incoming):
     return matches
 ```
 
+### Correctness and Optimality
+
+We prove that the greedy algorithm always produces the maximum number of valid pairings.
+
+Let `s` and `a` be the lowest-scoring remaining senior and incoming students, respectively.
+
+**Case 1: `s <= a`**
+Since `a` has the lowest score among the remaining incoming students, `s` cannot mentor any of them. Therefore, skipping `s` cannot reduce the maximum number of matches.
+
+**Case 2: `s > a`**
+The algorithm pairs `s` with `a`. We show that this choice is consistent with an optimal matching.
+
+Consider any optimal matching:
+
+- If `s` and `a` are already paired, no change is needed.
+- If only one is matched, replacing that student's existing pair with `(s, a)` preserves the number of matches.
+- If neither is matched, adding `(s, a)` would contradict optimality.
+- If both are matched to different students, suppose the original pairs are `(s, a')` and `(s', a)`. We can replace them with `(s, a)` and `(s', a')`. Both new pairs are valid because `s > a` and `s' >= s > a'`.
+
+Thus, an optimal matching containing the greedy pair always exists.
+
+**Conclusion**
+
+In both cases, the greedy decision preserves the maximum achievable number of matches. Applying this reasoning repeatedly to the remaining students proves that the algorithm returns the maximum possible number of valid pairings.
+
 ## Complexity Analysis
