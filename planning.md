@@ -12,14 +12,10 @@ We took a simple approach for our baseline solution: enumerate every possible co
 Seniors = [4,5,6]
 Incoming = [1,2,3]
 
-All Pairs Matrix =
-$$
-\begin{bmatrix} 
-(1,4) & (1,5) & (1,6) \\ 
-(2,4) & (2,5) & (2,6) \\ 
-(3,4) & (3,5) & (3,6)
-\end{matrix}
-$$
+
+                    |(1,4) (1,5) (1,6)|
+All Pairs Matrix =  |(2,4) (2,5) (2,6)|
+                    |(3,4) (3,5) (3,6)|
 ```
 
 ### Pseudocode
