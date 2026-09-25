@@ -142,7 +142,7 @@ We find that the greedy algorithm provides a significant improvement in the runn
 
 Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal(n \log n + k \log k + nk + n + k + 1)$ after dropping constants.
 Then, using the sum is max property, we have:
-$\mathcal(n \log n + k \log k + nk + n + k + 1)$ is $\mathcal{O}(nk)$,
+$\mathcal n \log n + k \log k + nk + n + k + 1$ is $\mathcal{O}(nk)$,
 since $\mathcal nk$ dominates $\mathcal n \log n$, $\mathcal k \log k$, and $\mathcal n+k$ as $n$ and $k$ grow large.
 
 But, our proposed greedy strategy is more efficient. The first step is sorting both the senior and incoming student lists which take $\mathcal{O}(n \log n)$ and $\mathcal{O}(k \log k)$ running time, respectively, when using an efficient sorting algorithm such as Merge Sort.
