@@ -2,12 +2,12 @@
 
 ## Problem Formulation
 
-The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Seniors = [i_1, i_2, \dots, i_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [j_1, j_2, \dots, j_n]$, with each list containing their programming experience scores. Each student can only be paired one time. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large. 
+The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Senior = [i_1, i_2, \dots, i_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [j_1, j_2, \dots, j_n]$, with each list containing their programming experience scores. Each student can only be paired one time, and a senior student can only be paired with an incoming student if the senior student has a greater programming experience score than the incoming student. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large. 
 
 ## Baseline Solution
 We took a simple approach for our baseline solution: enumerate every possible combination and find the maximum number of valid pairings. First, we sort both lists. Then our algorithm constructs a k x n matrix (k = number of incoming students, n = number of seniors), where each entry is a tuple of (incoming score, senior score). Across each row, the incoming score is fixed with senior scores ascending left to right. Down each column, the senior score is fixed with incoming scores descending top to bottom. For example:
 ```
-Seniors = [4,5,6]
+Senior = [4,5,6]
 Incoming = [1,2,3]
 
 
