@@ -5,8 +5,7 @@
 The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Seniors = [i_1, i_2, \dots, i_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [j_1, j_2, \dots, j_n]$, with each list containing their programming experience scores. Each student can only be paired one time. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large. 
 
 ## Baseline Solution
-
-We took a simple approach for our baseline solution: enumerate every possible combination and analyze the maximum number of valid pairings. To do so, we first sort both given lists. Then, our baseline alrogithm begins by constructing an k x n matrix (where k is the number of incoming students and n is the number of seniors). The entries of this matrix consist of tuples, where the first element is an incoming student's score and the second element is a senior's score. Across each row, the incoming student's score is fixed with senior's scores ascending across entries from left to right. Down each column, the senior's score is fixed, with incoming student's scores descending from top to bottom. As an example of how what this matrix may look like, consider the example below:
+We took a simple approach for our baseline solution: enumerate every possible combination and analyze the maximum number of valid pairings. To do so, we first sort both given lists. Then, our baseline algorithm begins by constructing a k x n matrix (where k is the number of incoming students and n is the number of seniors). The entries of this matrix consist of tuples, where the first element is an incoming student's score and the second element is a senior's score. Across each row, the incoming student's score is fixed, with senior scores ascending across entries from left to right. Down each column, the senior's score is fixed, with incoming student scores descending from top to bottom. As an example of what this matrix may look like, consider the example below:
 
 ```
 Seniors = [4,5,6]
@@ -18,6 +17,12 @@ All Pairs Matrix =  |(2,4) (2,5) (2,6)|
                     |(3,4) (3,5) (3,6)|
 ```
 
+
+After constructing the matrix, our algorithm then finds a pairing for each student (if any exist). To do so, it iterates through each row and compares the programming scores of each incoming-senior tuple. If it finds that the senior's score is greater than the incoming student's score, it records that match and moves onto the next row. Otherwise, it keeps iterating through the row's elements until it finds a valid match.
+
+To avoid duplicate pairing, we added a column counter. Recall that each column effectively represents a senior. This counter increases by one with each iteration so that the same column is not checked twice. For example, if the first valid match is found in the second column of the first row, then our algorithm iterates through the second row starting with the third column.
+
+The reason we sort the lists prior to constructing the matrix is to ensure the maximum number of combinations is found. We want to make sure an incoming student is paired with the senior who has the closest programming score to them. Thus, if we had an incoming student with a programming score of 4, and two seniors with scores of 6 and 10, we want to pair that student with the senior who scored 6. If another incoming student came along with a score of 7, they would then be able to pair with the senior who scored 10. If we instead paired the incoming student who scored 4 with the senior who scored 10, the incoming student who scored 7 wouldn't be able to pair with anybody — and we'd miss out on a possible match. As we progress through the matrix, we start with the lowest remaining incoming score and senior score, gradually ascending until we find matches.
 ### Pseudocode
 
 ```text
