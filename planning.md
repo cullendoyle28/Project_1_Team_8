@@ -22,7 +22,7 @@ The algorithm then iterates through each row, comparing scores in each tuple. If
 
 To avoid duplicate pairings and repeated comparisons, we track a column pointer that only moves forward through the senior students. The pointer advances whenever a senior is either used in a valid match or determined to be unable to mentor the current incoming student. Therefore, each senior student is considered at most once. For example, if the first match is found in the second column of the first row, the next row begins checking from the third column because the senior in the second column has already been assigned.
 
-We sort both lists beforehand so that students can be processed from the lowest experience scores to the highest. This allows the algorithm to select the lowest-scoring available senior who can mentor each incoming student. Specifically, each incoming student is paired with the lowest-scoring available senior whose score is strictly greater than the incoming student's score.For instance, if an incoming student scores 4 and two seniors score 6 and 10, that student should pair with the 6. If a later student scores 7, they can then pair with the 10. If the 4 had taken the 10 instead, the 7 would be left unmatched, costing us a match. Because both lists are sorted in ascending order, if a senior cannot mentor the current incoming student, that senior cannot mentor any later incoming student either. Every later incoming student has an experience score greater than or equal to the current student's score. Therefore, permanently skipping such a senior cannot reduce the maximum possible number of matches.
+We sort both lists beforehand so that students can be processed from the lowest experience scores to the highest. This allows the algorithm to select the lowest-scoring available senior who can mentor each incoming student. Specifically, each incoming student is paired with the lowest-scoring available senior whose score is strictly greater than the incoming student's score. For instance, if an incoming student scores 4 and two seniors score 6 and 10, that student should pair with the 6. If a later student scores 7, they can then pair with the 10. If the 4 had taken the 10 instead, the 7 would be left unmatched, costing us a match. Because both lists are sorted in ascending order, if a senior cannot mentor the current incoming student, that senior cannot mentor any later incoming student either. Every later incoming student has an experience score greater than or equal to the current student's score. Therefore, permanently skipping such a senior cannot reduce the maximum possible number of matches.
 
 When a valid senior is found, the algorithm selects the lowest-scoring available senior who can mentor the current incoming student. This preserves all higher-scoring seniors for later incoming students who may require a more experienced mentor. Therefore, these decisions do not reduce the maximum achievable number of pairings.
 
@@ -68,6 +68,10 @@ Algorithm MentorPairingBaseline(Senior, Incoming):
 
     return matches
 ```
+
+### Correctness of Baseline Solution 1
+
+Because both lists are sorted, any senior who cannot mentor the current lowest-scoring incoming student cannot mentor any later incoming student either. Therefore, skipping that senior cannot reduce the maximum number of matches. When a valid senior is found, selecting the lowest-scoring available senior preserves all higher-scoring seniors for later incoming students. Repeating these decisions therefore produces the maximum possible number of valid pairings.
 
 ## Baseline Solution 2
 
@@ -121,7 +125,7 @@ Function Search(i, used):
     return best
 ```
 
-### Correctness of the Baseline
+### Correctness of the Baseline 2
 
 The brute-force algorithm returns the maximum possible number of valid mentor pairings because it considers every possible valid decision for every incoming student.
 
@@ -207,14 +211,22 @@ In both cases, the greedy decision preserves the maximum achievable number of ma
 
 ## Complexity Analysis
 
-We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(nk)$ running time to create and search through the possible pairs.
+We find that the proposed greedy algorithm provides a significant improvement in running time compared to both baseline solutions.
 
-Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal n \log n + k \log k + nk + n + k + 1$ after dropping constants.
-Then, using the sum is max property, we have:
-$\mathcal n \log n + k \log k + nk + n + k + 1$ is $\mathcal{O}(nk)$,
-since $\mathcal nk$ dominates $\mathcal n \log n$, $\mathcal k \log k$, and $\mathcal n+k$ as $n$ and $k$ grow large.
+For Baseline Solution 1, the algorithm first sorts the senior and incoming student lists, requiring $O(n \log n)$ and $O(k \log k)$ time, respectively. It then constructs a $k \times n$ matrix containing every possible incoming-senior pair. Constructing this matrix requires $O(nk)$ time. After the matrix is constructed, the algorithm scans it using the row index and a column pointer. Because the column pointer only moves forward and never moves backward, each senior student is considered at most once during this scanning process. Therefore, the scan requires $O(n+k)$ time.
 
-But, our proposed greedy strategy is more efficient. The first step is sorting both the senior and incoming student lists which take $\mathcal{O}(n \log n)$ and $\mathcal{O}(k \log k)$ running time, respectively, when using an efficient sorting algorithm such as Merge Sort.
-After sorting, the algorithm uses two pointers to examine the lists. Each pointer only moves forward and never backward so the two pointer portion takes $\mathcal{O}(n + k)$ running time. Therefore, the running time of the greedy algorithm, after dropping constants (and operations requiring $\mathcal{O}(1)$ running time) and then using the sum is max property, is $\mathcal{O}(n \log n + k \log k)$, with the sorting step being the dominant operation.
+Thus, the total running time of Baseline Solution 1 is $T(n,k) = O(n \log n + k \log k + nk + n + k)$.
 
-The greedy algorithm requires just $\mathcal{O}(n + k)$ additional space beyond the input lists if the sorting algorithm is performed in place. This is a significant improvement over the baseline's $\mathcal{O}(nk)$ space requirement for storing the matrix of all possible pairs.
+Since the problem allows us to assume that the two lists have the same length, we can let $n=k$. The running time then becomes $O(n \log n + n^2 + n)$. Using the sum-is-max property, the $n^2$ term dominates. Therefore, the overall running time of Baseline Solution 1 is $O(n^2)$.
+
+For Baseline Solution 2, the brute-force algorithm exhaustively explores the possible matching decisions for every incoming student. For each incoming student, the algorithm may leave the student unmatched or attempt to pair the student with one of the available senior students. With lists of equal size $n$, a simple upper bound gives at most $n+1$ possible choices at each of $n$ recursive levels. This gives $O((n+1)^n)$ possible paths in the recursion tree. In addition, each recursive call may scan up to $n$ senior students. Therefore, a simple worst-case upper bound on the running time is $O(n(n+1)^n)$.
+
+This exponential growth makes the brute-force baseline impractical for large inputs, even though it guarantees that every possible valid matching is considered.
+
+Our proposed greedy algorithm is significantly more efficient. First, the senior and incoming student lists are sorted, requiring $O(n \log n)$ and $O(k \log k)$ time. After sorting, the algorithm uses two pointers to examine the lists. Each pointer only moves forward and never backward, so the two-pointer portion requires $O(n+k)$ time.
+
+Therefore, the total running time is $T(n,k) = O(n \log n + k \log k + n + k)$.
+
+Since the two lists may be assumed to have the same length, this simplifies to $O(n \log n + n)$. The sorting step dominates, so the overall running time of the proposed greedy algorithm is $O(n \log n)$.
+
+The space requirements also differ significantly. Baseline Solution 1 requires $O(nk)$, or $O(n^2)$ when the lists have equal length, to store the matrix of all possible pairs. Baseline Solution 2 requires an $O(n)$ used array and $O(n)$ recursion depth, giving $O(n)$ auxiliary space. Aside from the space required by the sorting algorithm, the proposed greedy algorithm uses only $O(1)$ additional space for its two pointers and match counter. If Merge Sort is used, the sorting process itself requires $O(n)$ auxiliary space.
