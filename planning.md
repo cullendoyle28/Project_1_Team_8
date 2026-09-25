@@ -137,3 +137,11 @@ Thus, an optimal matching containing the greedy pair always exists.
 In both cases, the greedy decision preserves the maximum achievable number of matches. Applying this reasoning repeatedly to the remaining students proves that the algorithm returns the maximum possible number of valid pairings.
 
 ## Complexity Analysis
+
+We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, resulting in (O(n^2)) spave and requiring (O(n^2)) time to create and search through the possible pairs. 
+
+Our proposed greedy strategy is more efficient. The first step is sorting both the senior and incoming student lists, which takes (O(n/logn)) time for each list using an efficient sorting algorithm such as Merge Sort. Since both lists contain (n) students, sorting both lists still results in (O(n/log n)) total time.
+
+After sorting, the algorithm uses two pointers to examine the lists. Each pointer only moves forward and never backward so the two pointer portion takes (O(n)) time. Therefore the overall running time of the greedy algorithm is (O(n/log n)), with the sorting step being the dominant operation.
+
+The greedy algorithm also require just (O(1)) additional space beyong the input lists if the sorting algorithm is performed in plave. This is a significant improvement over the baseline's (O(n^2)) space requirement for storing the matriz of all possible pairs
