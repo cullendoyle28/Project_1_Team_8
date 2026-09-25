@@ -2,10 +2,12 @@
 
 ## Problem Formulation
 
-The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Senior = [i_1, i_2, \dots, i_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [j_1, j_2, \dots, j_k]$, with each list containing their programming experience scores. Each student can only be paired one time, and a senior student can only be paired with an incoming student if the senior student has a greater programming experience score than the incoming student. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large. 
+The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Senior = [i_1, i_2, \dots, i_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [j_1, j_2, \dots, j_n]$, with each list containing their programming experience scores. Each student can only be paired one time, and a senior student can only be paired with an incoming student if the senior student has a greater programming experience score than the incoming student. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large.
 
 ## Baseline Solution
-We took a simple approach for our baseline solution: enumerate every possible combination and find the maximum number of valid pairings. First, we sort both lists. Then our algorithm constructs a k x n matrix (k = number of incoming students, n = number of seniors), where each entry is a tuple of (incoming score, senior score). Across each row, the incoming score is fixed with senior scores ascending left to right. Down each column, the senior score is fixed with incoming scores descending top to bottom. For example:
+
+We took a simple approach for our baseline solution: construct every possible incoming-senior pair and systematically select valid pairings. First, we sort both lists. Then our algorithm constructs a k x n matrix (k = number of incoming students, n = number of seniors), where each entry is a tuple of (incoming score, senior score). Across each row, the incoming score is fixed with senior scores ascending left to right. Down each column, the senior score is fixed with incoming scores ascending top to bottom. For example:
+
 ```
 Senior = [4,5,6]
 Incoming = [1,2,3]
@@ -15,11 +17,13 @@ Incoming = [1,2,3]
 All Pairs Matrix =  |(2,4) (2,5) (2,6)|
                     |(3,4) (3,5) (3,6)|
 ```
+
 The algorithm then iterates through each row, comparing scores in each tuple. If the senior's score is greater than the incoming student's, it records the match and moves to the next row. Otherwise, it keeps checking entries until it finds one.
 
 To avoid duplicate pairings, we track a column counter that increases with each match, so the same senior is never checked twice. For example, if the first match is found in the second column of row one, the next row starts checking from the third column.
 
 We sort the lists beforehand to maximize the number of matches. Ideally, each student should pair with the senior closest to their score. For instance, if an incoming student scores 4 and two seniors score 6 and 10, that student should pair with the 6. If a later student scores 7, they can then pair with the 10. If the 4 had taken the 10 instead, the 7 would be left unmatched, costing us a match. Working through the sorted matrix from lowest to highest ensures this doesn't happen.
+
 ### Pseudocode
 
 ```text
@@ -57,9 +61,10 @@ Algorithm MentorPairingBaseline(Senior, Incoming):
                 break
             else:
                 column += 1
-    
+
     return matches
 ```
+
 ## Algorithmic Strategy
 
 We propose a greedy algorithm using sorting and two pointers to maximize the number of valid mentor pairings.
@@ -138,7 +143,7 @@ In both cases, the greedy decision preserves the maximum achievable number of ma
 
 ## Complexity Analysis
 
-We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(nk)$ running time to create and search through the possible pairs. 
+We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(nk)$ running time to create and search through the possible pairs.
 
 Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal n \log n + k \log k + nk + n + k + 1$ after dropping constants.
 Then, using the sum is max property, we have:
