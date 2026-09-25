@@ -140,7 +140,7 @@ In both cases, the greedy decision preserves the maximum achievable number of ma
 
 We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(nk)$ running time to create and search through the possible pairs. 
 
-Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal(n \log n + k \log k + nk + n + k + 1)$ after dropping constants.
+Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal n \log n + k \log k + nk + n + k + 1$ after dropping constants.
 Then, using the sum is max property, we have:
 $\mathcal n \log n + k \log k + nk + n + k + 1$ is $\mathcal{O}(nk)$,
 since $\mathcal nk$ dominates $\mathcal n \log n$, $\mathcal k \log k$, and $\mathcal n+k$ as $n$ and $k$ grow large.
