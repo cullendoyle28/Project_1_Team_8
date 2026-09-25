@@ -8,12 +8,18 @@ The objective of the Mentor Pairing problem is to efficiently pair two students 
 
 We took a simple approach for our baseline solution: enumerate every possible combination and analyze the maximum number of valid pairings. To do so, we first sort both given lists. Then, our baseline alrogithm begins by constructing an k x n matrix (where k is the number of incoming students and n is the number of seniors). The entries of this matrix consist of tuples, where the first element is an incoming student's score and the second element is a senior's score. Across each row, the incoming student's score is fixed with senior's scores ascending across entries from left to right. Down each column, the senior's score is fixed, with incoming student's scores descending from top to bottom. As an example of how what this matrix may look like, consider the example below:
 
+```
 Seniors = [4,5,6]
 Incoming = [1,2,3]
 
 All Pairs Matrix =
-$$\begin{bmatrix} (1,4) & (1,5) & (1,6) \\ (2,4) & (2,5) & (2,6) \\ (3,4) & (3,5) & (3,6)
-\end{matrix}$$
+$$
+\begin{bmatrix} 
+(1,4) & (1,5) & (1,6) \\ 
+(2,4) & (2,5) & (2,6) \\ 
+(3,4) & (3,5) & (3,6)
+\end{matrix}
+$$
 ```
 
 ### Pseudocode
