@@ -138,16 +138,14 @@ In both cases, the greedy decision preserves the maximum achievable number of ma
 
 ## Complexity Analysis
 
-We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(n \multiply k)$ time to create and search through the possible pairs. 
+We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(nk)$ running time to create and search through the possible pairs. 
 
-Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal(n \log n)$ + $\mathcal(k \log k)$ + $\mathcal(nk)$ + $\mathcal(n+k)$ after dropping constants.
+Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal(n \log n + k \log k + nk + n + k + 1)$ after dropping constants.
 Then, using the sum is max property, we have:
-$\mathcal(n \log n)$ + $\mathcal(k \log k)$ + $\mathcal(nk)$ + $\mathcal{O}(n+k)$ is $\mathcal{O}(nk)$,
+$\mathcal(n \log n + k \log k + nk + n + k + 1)$ is $\mathcal{O}(nk)$,
 since $\mathcal nk$ dominates $\mathcal n \log n$, $\mathcal k \log k$, and $\mathcal n+k$ as $n$ and $k$ grow large.
 
+But, our proposed greedy strategy is more efficient. The first step is sorting both the senior and incoming student lists which take $\mathcal{O}(n \log n)$ and $\mathcal{O}(k \log k)$ running time, respectively, when using an efficient sorting algorithm such as Merge Sort.
+After sorting, the algorithm uses two pointers to examine the lists. Each pointer only moves forward and never backward so the two pointer portion takes $\mathcal{O}(n + k)$ running time. Therefore, the running time of the greedy algorithm, after dropping constants (and operations requiring $\mathcal{O}(1)$ running time) and then using the sum is max property, is $\mathcal{O}(n \log n + k \log k)$, with the sorting step being the dominant operation.
 
-Our proposed greedy strategy is more efficient. The first step is sorting both the senior and incoming student lists, which takes (O(n /log n)) time for each list using an efficient sorting algorithm such as Merge Sort. Since the lists can contain different numbers of students sorting both lists still results in (O(n /log n + )) total time.
-
-After sorting, the algorithm uses two pointers to examine the lists. Each pointer only moves forward and never backward so the two pointer portion takes (O(n)) time. Therefore the overall running time of the greedy algorithm is (O(n/log n)), with the sorting step being the dominant operation.
-
-The greedy algorithm also require just (O(1)) additional space beyong the input lists if the sorting algorithm is performed in plave. This is a significant improvement over the baseline's (O(n^2)) space requirement for storing the matriz of all possible pairs
+The greedy algorithm requires just (O(1)) additional space beyond the input lists if the sorting algorithm is performed in place. This is a significant improvement over the baseline's (O(n^2)) space requirement for storing the matrix of all possible pairs.
