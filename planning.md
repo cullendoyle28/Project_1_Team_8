@@ -140,10 +140,10 @@ In both cases, the greedy decision preserves the maximum achievable number of ma
 
 We find that the greedy algorithm provides a significant improvement in the running time compared to the baseline solution. The baseline algorithm constructs a matrix containing every possible incoming and senior student pairing, requiring $\mathcal{O}(n \multiply k)$ time to create and search through the possible pairs. 
 
-Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal(n \log n)$ + $\mathcal{O}(k \log k)$ + $\mathcal{O}(k \multiply n)$ + $\mathcal{O}(n \add k)$ after dropping constants.
+Specifically, we have $\mathcal{T}(n, k)$ = $\mathcal(n \log n)$ + $\mathcal(k \log k)$ + $\mathcal(kn)$ + $\mathcal(n+k)$ after dropping constants.
 Then, using the sum is max property, we have:
-$\mathcal{O}(n \log n)$ + $\mathcal{O}(k \log k)$ + $\mathcal{O}(k \multiply n)$ + $\mathcal{O}(n \add k)$ is $\mathcal{O}(n \multiply k)$,
-since $n*k$ dominates $n$log$n$, $k$log$k$, and $n$+$k$ as $n$ and $k$ grow large.
+$\mathcal(n \log n)$ + $\mathcal(k \log k)$ + $\mathcal(kn)$ + $\mathcal{O}(n+k)$ is $\mathcal{O}(n \multiply k)$,
+since $\mathcal n*k$ dominates $n$log$n$, $k$log$k$, and $n$+$k$ as $n$ and $k$ grow large.
 
 
 Our proposed greedy strategy is more efficient. The first step is sorting both the senior and incoming student lists, which takes (O(n /log n)) time for each list using an efficient sorting algorithm such as Merge Sort. Since the lists can contain different numbers of students sorting both lists still results in (O(n /log n + )) total time.
