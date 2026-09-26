@@ -75,7 +75,7 @@ Because both lists are sorted, any senior who cannot mentor the current lowest-s
 
 ## Baseline Solution 2
 
-For our baseline solution, we use an exhaustive brute-force search. The purpose of this approach is to guarantee that we find the maximum possible number of valid mentor pairings, even though the algorithm is inefficient for large inputs.
+For our second baseline solution, we use an exhaustive brute-force search. The purpose of this approach is to guarantee that we find the maximum possible number of valid mentor pairings, even though the algorithm is inefficient for large inputs.
 
 For each incoming student, the algorithm considers every possible decision. The student may remain unmatched, or they may be paired with any currently unused senior student whose experience score is strictly greater than their score. After making one of these choices, the algorithm recursively considers the next incoming student.
 
