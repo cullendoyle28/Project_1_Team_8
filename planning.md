@@ -2,7 +2,7 @@
 
 ## Problem Formulation
 
-The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Senior = [i_1, i_2, \dots, i_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [j_1, j_2, \dots, j_k]$, with each list containing their programming experience scores. Each student can only be paired one time, and a senior student can only be paired with an incoming student if the senior student has a greater programming experience score than the incoming student. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large.
+The objective of the Mentor Pairing problem is to efficiently pair two students based on experience, maximizing the total number of pairs. We are provided with a list of senior students of size $n$ denoted as $Senior = [s_1, s_2, \dots, s_n]$ and another list of incoming students of size $k$ denoted as $Incoming = [a_1, a_2, \dots, a_k]$, with each list containing their programming experience scores. Each student can only be paired one time, and a senior student can only be paired with an incoming student if the senior student has a greater programming experience score than the incoming student. Our goal is to design an algorithm that determines the absolute maximum number of mentor pairings of senior and incoming students, scaling efficiently even when the lists of students are very large.
 
 ## Baseline Solution 1
 
@@ -90,7 +90,7 @@ Algorithm MentorPairingBruteForce(Senior, Incoming):
 
     Input:
         Senior: A list of n senior students' experience scores
-        Incoming: A list of n incoming students' experience scores
+        Incoming: A list of k incoming students' experience scores
 
     Output:
         Maximum number of valid mentor pairings
@@ -102,7 +102,7 @@ Algorithm MentorPairingBruteForce(Senior, Incoming):
 
 Function Search(i, used):
 
-    if i == n:
+    if i == k:
         return 0
 
     // Option 1: Leave this incoming student unmatched
@@ -138,12 +138,12 @@ Since the algorithm computes the number of matches produced by every possible va
 We propose a greedy algorithm using sorting and two pointers to maximize the number of valid mentor pairings.
 The key idea is to match the incoming student with the lowest remaining experience score to the senior student with the lowest remaining score who can mentor that student. By doing so, we preserve more experienced senior students for incoming students who may require them.
 
-First, we sort both lists of experience scores in ascending order. We then initialize two pointers, `i` and `j`, at the beginning of the sorted senior and incoming lists, respectively. We also initialize `matches` to zero.
+First, we sort both lists of experience scores in ascending order. We then initialize two pointers, `i` and `j`, at the beginning of the sorted incoming and senior lists, respectively. We also initialize `matches` to zero.
 
 At each iteration, we compare the experience scores of the students at the two pointers:
 
-1. **If `Senior[i] > Incoming[j]`:** We form a valid pair, increment `matches`, and advance both pointers. Both students have been assigned and cannot be paired again.
-2. **Otherwise:** We advance only `i`. Because `Incoming[j]` has the lowest experience score among all remaining incoming students, `Senior[i]` cannot mentor that student or any other remaining incoming student. Therefore, skipping this senior student cannot reduce the maximum possible number of matches.
+1. **If `Senior[j] > Incoming[i]`:** We form a valid pair, increment `matches`, and advance both pointers. Both students have been assigned and cannot be paired again.
+2. **Otherwise:** We advance only `j`. Because `Incoming[i]` has the lowest experience score among all remaining incoming students, `Senior[j]` cannot mentor that student or any other remaining incoming student. Therefore, skipping this senior student cannot reduce the maximum possible number of matches.
 
 We repeat this process until either pointer reaches the end of its list. At that point, no additional valid pairs can be formed, and the algorithm returns `matches`.
 
@@ -166,9 +166,9 @@ Algorithm MentorPairingGreedy(Senior, Incoming):
     j = 0
     matches = 0
 
-    while i < n and j < k:
+    while j < n and i < k:
 
-        if Senior[i] > Incoming[j]:
+        if Senior[j] > Incoming[i]:
 
             matches = matches + 1
 
@@ -177,7 +177,7 @@ Algorithm MentorPairingGreedy(Senior, Incoming):
 
         else:
 
-            i = i + 1
+            j = j + 1
 
     return matches
 ```
