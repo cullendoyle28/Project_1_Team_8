@@ -47,7 +47,7 @@ def MentorPairingBruteForce(senior, incoming):
                 matches = 1 + Search(i+1, used)
                 best = max(best, matches)
                 used[j] = False
-            return best
+        return best
 
     return Search(0, used)
 
