@@ -5,7 +5,16 @@ from time import perf_counter
 import random
 import pandas as pd
 
-from methods import MentorPairingBruteForce, MentorPairingGreedy
+from methods import (
+    MentorPairingBaseline,
+    MentorPairingBruteForce,
+    MentorPairingGreedy
+)
+
+# The matrix baseline stores every (incoming, senior) pair, so its memory
+# use grows quadratically (roughly 600 MB at n = 3000). Larger inputs in
+# Experiment 2 are skipped for this algorithm.
+MAX_BASELINE_SIZE = 3000
 
 
 def generate_test_data(size, max_score=1000):
@@ -50,7 +59,7 @@ def run_benchmarks():
     random.seed(42)
 
     # Experiment 1:
-    # Compare brute force and greedy on small inputs.
+    # Compare all three algorithms on small inputs.
     comparison_sizes = [2, 3, 4, 5, 6, 7, 8, 9]
 
     comparison_cases = [
@@ -60,6 +69,12 @@ def run_benchmarks():
 
     brute_force_times = benchmark_algo_multi(
         MentorPairingBruteForce,
+        comparison_cases,
+        repeat=5
+    )
+
+    baseline_comparison_times = benchmark_algo_multi(
+        MentorPairingBaseline,
         comparison_cases,
         repeat=5
     )
@@ -77,6 +92,13 @@ def run_benchmarks():
     df_brute["Algorithm"] = "Brute Force"
     df_brute["Experiment"] = "Comparison"
 
+    df_baseline_comparison = pd.DataFrame(
+        baseline_comparison_times,
+        columns=["InputSize", "Time", "Trial"]
+    )
+    df_baseline_comparison["Algorithm"] = "Matrix Baseline"
+    df_baseline_comparison["Experiment"] = "Comparison"
+
     df_greedy_comparison = pd.DataFrame(
         greedy_comparison_times,
         columns=["InputSize", "Time", "Trial"]
@@ -85,11 +107,14 @@ def run_benchmarks():
     df_greedy_comparison["Experiment"] = "Comparison"
 
     # Experiment 2:
-    # Measure greedy scalability on much larger inputs.
+    # Measure matrix baseline and greedy scalability on much larger inputs.
+    # The matrix baseline only runs on sizes up to MAX_BASELINE_SIZE.
     greedy_sizes = [
         100,
         500,
         1000,
+        2000,
+        3000,
         5000,
         10000,
         20000,
@@ -102,11 +127,30 @@ def run_benchmarks():
         for size in greedy_sizes
     ]
 
+    baseline_cases = [
+        (senior, incoming)
+        for senior, incoming in greedy_cases
+        if len(senior) <= MAX_BASELINE_SIZE
+    ]
+
+    baseline_scalability_times = benchmark_algo_multi(
+        MentorPairingBaseline,
+        baseline_cases,
+        repeat=5
+    )
+
     greedy_scalability_times = benchmark_algo_multi(
         MentorPairingGreedy,
         greedy_cases,
         repeat=5
     )
+
+    df_baseline_scalability = pd.DataFrame(
+        baseline_scalability_times,
+        columns=["InputSize", "Time", "Trial"]
+    )
+    df_baseline_scalability["Algorithm"] = "Matrix Baseline"
+    df_baseline_scalability["Experiment"] = "Scalability"
 
     df_greedy_scalability = pd.DataFrame(
         greedy_scalability_times,
@@ -119,7 +163,9 @@ def run_benchmarks():
     df_all = pd.concat(
         [
             df_brute,
+            df_baseline_comparison,
             df_greedy_comparison,
+            df_baseline_scalability,
             df_greedy_scalability
         ],
         ignore_index=True
