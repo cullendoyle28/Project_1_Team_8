@@ -1,6 +1,7 @@
 # benchmark.py
 # Empirically measures the execution time of the mentor pairing algorithms.
 
+from pathlib import Path
 from time import perf_counter
 import random
 import pandas as pd
@@ -15,6 +16,10 @@ from methods import (
 # use grows quadratically (roughly 600 MB at n = 3000). Larger inputs in
 # Experiment 2 are skipped for this algorithm.
 MAX_BASELINE_SIZE = 3000
+
+# Generated files (the CSV and the plots) are stored in the assets folder
+# at the root of the repository, next to src.
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 
 def generate_test_data(size, max_score=1000):
@@ -171,7 +176,8 @@ def run_benchmarks():
         ignore_index=True
     )
 
-    df_all.to_csv("empirical_results.csv", index=False)
+    ASSETS_DIR.mkdir(exist_ok=True)
+    df_all.to_csv(ASSETS_DIR / "empirical_results.csv", index=False)
 
     print("All Times:")
     print(df_all)
