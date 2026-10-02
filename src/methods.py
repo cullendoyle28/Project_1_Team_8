@@ -1,6 +1,62 @@
 # methods.py
 # Implements baseline and proposed solutions for the Mentor Pairing problem.
 
+def MentorPairingBaseline(senior: list, incoming: list) -> int:
+    """
+    Find the maximum number of valid mentor pairings using an all-pairs matrix.
+ 
+    A pairing is valid when a senior student's experience score is greater
+    than the experience score of the incoming student. Each student can be
+    included in at most one pairing.
+ 
+    This function sorts both lists, builds a k x n matrix that stores every
+    possible (incoming score, senior score) pair, and then scans the matrix
+    row by row with a column pointer that only moves forward. Building the
+    matrix dominates the running time and space: O(nk).
+ 
+    Args:
+        senior (list): A list of senior students' experience scores.
+        incoming (list): A list of incoming students' experience scores.
+ 
+    Returns:
+        int: The maximum number of valid mentor pairings.
+    """
+ 
+    senior = sorted(senior)
+    incoming = sorted(incoming)
+ 
+    n = len(senior)
+    k = len(incoming)
+ 
+    matches = 0
+ 
+    # Build the k x n matrix of all (incoming, senior) pairs: O(nk)
+    allpairs = []
+ 
+    for i in range(k):
+        row = []
+        for j in range(n):
+            row.append((incoming[i], senior[j]))
+        allpairs.append(row)
+ 
+    # The column pointer only moves forward, so each senior is checked once
+    column = 0
+ 
+    for i in range(k):
+        row_to_check = allpairs[i]
+        while column < n:
+            pair = row_to_check[column]
+            if pair[0] < pair[1]:
+                # Valid pair: use this senior and move to the next row
+                matches += 1
+                column += 1
+                break
+            else:
+                # This senior cannot mentor anyone remaining: skip
+                column += 1
+ 
+    return matches
+
 def MentorPairingBruteForce(senior, incoming):
     """
     Find the maximum number of valid mentor pairings using brute force.
