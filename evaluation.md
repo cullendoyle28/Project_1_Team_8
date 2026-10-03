@@ -13,12 +13,12 @@ Unit testing (`tests.py`) confirms that the algorithms return the correct maximu
 ## Benchmarking Results
 We compare the performance of our three algorithms on randomly generated arrays with max_score = 1000 (`benchmark.py`), varying input size (n) from 2 to 100,000 students per list. We present the results in the plots below. The left plot shows the execution time on a linear scale. In this plot, once the input size reaches 9 students per list, it takes about 2 seconds for the brute force algorithm to execute. The right plot uses a logarithmic scale for the y axis. The reason for this is to make the graph more readable, as it is impossible to tell where the baseline algorithm is. After switching to a logarithmic scale for the y axis (shown in the right plot), notice that the baseline algorithm is slower than the greedy algorithm because the entirety of the baseline algorithm's line segments, from 2 through 9 students per list, is above the greedy algorithm's line segments.
 
-| ![Comparison Plot (Linear Scale)](assets/comparison_plot.png) | ![Comparison Plot (Log Scale)](comparison_plot_log.png) |
+| ![Comparison Plot (Linear Scale)](assets/comparison_plot.png) | ![Comparison Plot (Log Scale)](assets/comparison_plot_log.png) |
 |---|---|
 
 Next, we compare the performance of the Baseline Algorithm and Greedy Algorithm for more clarity on which one is better at much higher input sizes. The right plot shows the execution time on a linear scale while the left plot uses a logarithmic scale for both axes. Again, we changed to a logarithmic scale to show the difference in execution time more distinctly (shown in the right plot). This shows no clear overlap between the line segments.
 
-| ![Scalability Plot (Linear Scale)](scalability_plot.png) | ![Scalability Plot (Log Scale)](scalability_plot_log.png) |
+| ![Scalability Plot (Linear Scale)](assets/scalability_plot.png) | ![Scalability Plot (Log Scale)](assets/scalability_plot_log.png) |
 |---|---|
 
 The empirical data aligns with our theoretical complexity analysis (`planning.md`):
