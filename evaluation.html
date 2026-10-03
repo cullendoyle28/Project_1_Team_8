@@ -34,6 +34,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="evaluation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="evaluation_files/libs/bootstrap/bootstrap-4dd9d9e997bcfcf8b4eaa76088c19334.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -50,11 +79,43 @@ ul.task-list li input[type="checkbox"] {
 <h1>Empirical Evaluation</h1>
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>We implemented our three algorithms (<code>methods.py</code>) that solve the Mentor Pairing problem: 1. <strong>Baseline Algorithm:</strong> 2. <strong>Brute Force Algorithm:</strong> 3. <strong>Greedy Algorithm:</strong></p>
-<p>Unit testing (<code>tests.py</code>) confirms that the algorithms return the correct maximum pair count across multiple typical and edge cases (empty lists, perfectly matched pairs, and unpairable elements).</p>
+<p>We implemented our three algorithms (<code>methods.py</code>) that solve the Mentor Pairing problem: 1. <strong>Brute Force Algorithm:</strong> A naive approach that exhaustively explores all possible matching decisions for every incoming student. 2. <strong>Baseline Algorithm:</strong> A less naive approach that sorts the students, creates a matrix that stores every possible pair, and then scans the matrix row by row with a column pointer that only moves forward. 3. <strong>Greedy Algorithm:</strong> An efficient greedy approach that sorts the students from least to most experience, then matches them by shifting the forward moving column/row pointers if a student is matched.</p>
+<p>Unit testing (<code>tests.py</code>) confirms that the algorithms return the correct maximum pair count across multiple typical and edge cases (empty lists, ties, etc.).</p>
 </section>
 <section id="benchmarking-results" class="level2">
 <h2 class="anchored" data-anchor-id="benchmarking-results">Benchmarking Results</h2>
+<p>We compare the performance of our three algorithms on randomly generated arrays with max_score = 1000 (<code>benchmark.py</code>), varying input size (n) from 2 to 100,000 students per list. We present the results in the plots below. The left plot shows the execution time on a linear scale. In this plot, once the input size reaches 9 students per list, it takes about 2 seconds for the brute force algorithm to execute. The right plot uses a logarithmic scale for the y axis. The reason for this is to make the graph more readable, as it is impossible to tell where the baseline algorithm is. After switching to a logarithmic scale for the y axis (shown in the right plot), notice that the baseline algorithm is slower than the greedy algorithm because the entirety of the baseline algorithm’s line segments, from 2 through 9 students per list, is above the greedy algorithm’s line segments.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><img src="assets/comparison_plot.png" class="img-fluid" alt="Comparison Plot (Linear Scale)"></th>
+<th><img src="comparison_plot_log.png" class="img-fluid" alt="Comparison Plot (Log Scale)"></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Next, we compare the performance of the Baseline Algorithm and Greedy Algorithm for more clarity on which one is better at much higher input sizes. The right plot shows the execution time on a linear scale while the left plot uses a logarithmic scale for both axes. Again, we changed to a logarithmic scale to show the difference in execution time more distinctly (shown in the right plot). This shows no clear overlap between the line segments.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><img src="scalability_plot.png" class="img-fluid" alt="Scalability Plot (Linear Scale)"></th>
+<th><img src="scalability_plot_log.png" class="img-fluid" alt="Scalability Plot (Log Scale)"></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>The empirical data aligns with our theoretical complexity analysis (<code>planning.md</code>):</p>
+<p>Brute Force Exponential Scaling: The brute force algorithm theoretically scales at <span class="math inline">\(\mathcal{O}((n+1)^n)\)</span> due to exhaustively exploring the possible matching decisions for every incoming student. Baseline Quadratic Scaling: The baseline algorithm theoretically scales at <span class="math inline">\(\mathcal{O}(n^2)\)</span> due to constructing a <span class="math inline">\(k\)</span> by <span class="math inline">\(n\)</span> matrix containing every possible incoming-senior pair. At <span class="math inline">\(n = 9\)</span>, the proposed algorithm is unbelievably faster than the brute force algorithm. The baseline algorithm is almost <strong>1,000,000 times faster</strong>, which shows that efficiently organizing data (sorting) before processing drastically outperforms naive continuous searching. Greedy Algorithm Efficiency: The greedy algorithm scales at <span class="math inline">\(\mathcal{O}(n \log n)\)</span>, constrained almost entirely by Python’s built-in sorting algorithm. At <span class="math inline">\(n = 3,000\)</span>, the greedy algorithm is several orders of magnitude faster than the baseline algorithm. In particular, the greedy algorithm is approximately <strong>770 times faster</strong>.</p>
 </section>
 </section>
 
