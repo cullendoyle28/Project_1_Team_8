@@ -1,5 +1,5 @@
 # Project 1: Problem 8 Overview
 
-This project focuses on developing and analyzing algorithms for efficiently pairing senior students with less experienced incoming students where each student can be in at most one pair. Two naive approaches and a more complicated greedy strategy were explored to maximize the number of mentor pairings between students. The project includes algorithm design, complexity analysis, and implementation details.
+This project focuses on developing and analyzing algorithms for efficiently pairing senior students with less experienced incoming students where each student can be in at most one pair. Two naive approaches and a more sophisticated greedy strategy were explored to maximize the number of mentor pairings between students. The project includes algorithm design, complexity analysis, and implementation details.
 
-See the [planning document](planning.md) for detailed algorithm design and complexity analysis.
+See the [planning document](planning.md) for detailed algorithm design and complexity analysis, and the [evaluation document](evaluation.md) for the empirical benchmarking results.
